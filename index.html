@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Menu Card</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="menu-container">
+    <h1 class="animated-title">🍽️ 🌟Welcome to Royal Feast🌟</h1>
+
+    <div class="menu-section left-slide">
+      <h2>🥟 Snacks</h2>
+      <ul>
+        <li><input type="checkbox" data-price="30"> Samosa - ₹30</li>
+        <li><input type="checkbox" data-price="70"> French Fries - ₹70</li>
+        <li><input type="checkbox" data-price="60"> Veg Sandwich - ₹60</li>
+      </ul>
+    </div>
+
+    <div class="menu-section right-slide">
+      <h2>🥣 Soups</h2>
+      <ul>
+        <li><input type="checkbox" data-price="50"> Tomato Soup - ₹50</li>
+        <li><input type="checkbox" data-price="60"> Manchow Soup - ₹60</li>
+        <li><input type="checkbox" data-price="65"> Sweet Corn Soup - ₹65</li>
+      </ul>
+    </div>
+
+    <div class="menu-section right-slide">
+      <h2>🍢 Starters</h2>
+      <ul>
+        <li><input type="checkbox" data-price="120"> Paneer Tikka - ₹120</li>
+        <li><input type="checkbox" data-price="100"> Veg Spring Roll - ₹100</li>
+        <li><input type="checkbox" data-price="140"> Chicken Lollipop - ₹140</li>
+      </ul>
+    </div>
+
+    <div class="menu-section left-slide">
+        <h2>🍛 Dinner</h2>
+        <ul>
+          <li><input type="checkbox" data-price="150"> Veg Biryani - ₹150</li>
+          <li><input type="checkbox" data-price="180"> Paneer Butter Masala with Naan - ₹180</li>
+          <li><input type="checkbox" data-price="200"> Chicken Curry with Rice - ₹200</li>
+        </ul>
+      </div>
+
+    <div class="menu-section left-slide">
+      <h2>🍦 Ice Creams</h2>
+      <ul>
+        <li><input type="checkbox" data-price="40"> Vanilla - ₹40</li>
+        <li><input type="checkbox" data-price="50"> Chocolate - ₹50</li>
+        <li><input type="checkbox" data-price="45"> Strawberry - ₹45</li>
+      </ul>
+    </div>
+
+    <div class="menu-section right-slide">
+      <h2>🍹 Juices</h2>
+      <ul>
+        <li><input type="checkbox" data-price="60"> Orange Juice - ₹60</li>
+        <li><input type="checkbox" data-price="70"> Mango Shake - ₹70</li>
+        <li><input type="checkbox" data-price="50"> Watermelon Juice - ₹50</li>
+      </ul>
+    </div>
+
+    <div class="menu-section left-slide">
+      <h2>🍎 Fruits</h2>
+      <ul>
+        <li><input type="checkbox" data-price="90"> Mixed Fruit Plate - ₹90</li>
+        <li><input type="checkbox" data-price="60"> Apple Slices - ₹60</li>
+        <li><input type="checkbox" data-price="70"> Banana Split - ₹70</li>
+      </ul>
+    </div>
+
+    <div class="total-display">
+        🧾 <strong>Total:</strong> ₹<span id="total">0</span>
+      </div>
+
+    <button id="orderBtn">Confirm Order</button>
+
+    <div class="thankyou-message" id="thankYou">
+      <h2>🎉 Thank You!</h2>
+      <p>Your order has been placed successfully and will be delivered soon 🍽️</p>
+      <button id="backBtn">Order Again</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p class="footer-text">✨ Thank you for visiting Royal Feast – Where Taste Meets Style ✨</p><br>
+    <p class="footer-text"><b>Powered By Mandar Kajbaje</p>
+  </footer>
+
+  <script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const totalDisplay = document.getElementById("total");
+    const orderBtn = document.getElementById('orderBtn');
+    const thankYou = document.getElementById('thankYou');
+    const backBtn = document.getElementById('backBtn');
+    const menuContainer = document.querySelector('.menu-container');
+
+    function updateTotal() {
+      let total = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          total += parseInt(cb.getAttribute("data-price"));
+        }
+      });
+      totalDisplay.textContent = total;
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener("change", updateTotal));
+
+    orderBtn.addEventListener("click", () => {
+      let items = [];
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          items.push(cb.parentElement.textContent.trim());
+        }
+      });
+
+      if (items.length === 0) {
+        alert("Please select at least one item!");
+        return;
+      }
+
+      orderSummary.innerHTML = `<h3>Your Order:</h3><ul>${items.map(item => `<li>${item}</li>`).join("")}</ul><p><strong>Total:</strong> ₹${totalDisplay.textContent}</p>`;
+      thankyou.classList.add("show");
+      menu.style.display = "none";
+      orderBtn.style.display = "none";
+    });
+
+    backBtn.addEventListener("click", () => {
+      checkboxes.forEach(cb => cb.checked = false);
+      updateTotal();
+      menu.style.display = "block";
+      thankyou.classList.remove("show");
+      orderBtn.style.display = "block";
+    });
+
+    orderBtn.onclick = () => {
+      thankYou.classList.add('show');
+      orderBtn.style.display = 'none';
+    };
+
+    backBtn.onclick = () => {
+      thankYou.classList.remove('show');
+      orderBtn.style.display = 'block';
+    };
+  </script>
+</body>
+</html>
